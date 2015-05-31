@@ -3,9 +3,7 @@
  */
 
 define(['eventTags', 'facebook'], function(eventTags, FB) {
-   var fbHandler = {
-       accessToken: null,
-
+   return {
        permissions: ['public_profile', 'email'],
 
        permissionsString: function() {
@@ -20,29 +18,40 @@ define(['eventTags', 'facebook'], function(eventTags, FB) {
            return pString;
        },
 
-       checkLoginStatus: function(response) {
+       getLoginStatus: function(callback) {
+           FB.getLoginStatus(function(response) {
+               console.log('FB::getLoginStatus');
+               console.log(response);
+               if(callback) {
+                   callback(response);
+               }
+           });
+       },
+
+       checkLoginStatus: function(response, callback) {
            if (response.status === 'connected') {
-               this.getUserInfo();
+               this.getUserInfo(callback);
            } else if (response.status === 'not_authorized') {
-               this.showLoginPopup();
+               this.showLoginPopup(callback);
            } else {
-              this.showLoginPopup();
+              this.showLoginPopup(callback);
            }
        },
 
-       showLoginPopup: function() {
+       showLoginPopup: function(callback) {
            FB.login(function(response) {
                console.log('facebook login response: ', response);
-               this.checkLoginStatus(response);
+               this.checkLoginStatus(callback);
            }, {scope: this.permissionsString()});
        },
 
-       getUserInfo: function() {
+       getUserInfo: function(fbUser, callback) {
            FB.api('/me', function(response) {
               console.log('user response', JSON.stringify(response));
+               if (callback) {
+                   callback(response);
+               }
            });
        }
    };
-
-    return fbHandler;
 });

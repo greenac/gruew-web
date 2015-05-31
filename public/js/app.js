@@ -2,8 +2,10 @@
  * Created by agreen on 4/3/15.
  */
 
-define(['jquery', 'bootstrap', 'facebook'], function($, bootstrap, FB) {
-    var App = {
+define(['jquery', 'bootstrap', 'fbHandler', 'fbUser'], function($, bootstrap, fbHandler, fbUser) {
+    return {
+        user: new fbUser(),
+
         names: [
             'Amber Costello',
             'Alana Garvey',
@@ -46,6 +48,14 @@ define(['jquery', 'bootstrap', 'facebook'], function($, bootstrap, FB) {
                 $(this).css({border: '1px solid greeen'});
                 that.printMessage('#message2Header');
             });
+
+            fbHandler.getLoginStatus(this.userLoggedInCallback);
+        },
+
+        userLoggedInCallback: function(info) {
+            debugger;
+            this.user.setProperties(info);
+            console.log('user:', this.user);
         },
 
         printMessage: function(element) {
@@ -92,8 +102,6 @@ define(['jquery', 'bootstrap', 'facebook'], function($, bootstrap, FB) {
         randomValue: function(collection) {
             var index = Math.floor((Math.random() * collection.length));
             return collection[index];
-        },
+        }
     };
-
-    return App;
 });

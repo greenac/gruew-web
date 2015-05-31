@@ -8,7 +8,8 @@ require.config({
         facebook    : '//connect.facebook.net/en_US/sdk',
         fbHandler   : 'fbHandler',
         eventTags   : 'eventTags',
-        constants   : 'constants'
+        constants   : 'constants',
+        fbUser      : 'fbUser'
     },
 
     shim: {

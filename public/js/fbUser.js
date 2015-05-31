@@ -3,19 +3,19 @@
  */
 
 define(['constants'], function(constants) {
-    return {
-        profileId   : null,
-        firstName   : null,
-        lastName    : null,
-        email       : null,
-        accessToken : null,
-        profileUrl  : null,
-        gender      : null,
-        locale      : null,
-        timezone    : null,
-        updatedTime : null,
+    return function() {
+        this.profileId = null;
+        this.firstName = null;
+        this.lastName = null;
+        this.email = null;
+        this.accessToken = null;
+        this.profileUrl = null;
+        this.gender = null;
+        this.locale = null;
+        this.timezone = null;
+        this.updatedTime = null,
 
-        mapProperty: function(property, value) {
+        this.mapProperty = function(property, value) {
             if (property === 'profileId') {
                 this.profileId = value;
             } else if (property === 'firstName') {
@@ -37,16 +37,14 @@ define(['constants'], function(constants) {
             } else if (property === 'updatedTime') {
                 this.updatedTime = value;
             }
-        },
+        };
 
-        setProperties: function(info, isFbHash) {
-            if (isFbHash) {
-                for(var key in info) {
-                    if (key in constants.fbUserHash) {
-                        this.mapProperty(constants.fbUserHash[key], info[key]);
-                    }
+        this.setProperties = function(info) {
+            for(var key in info) {
+                if (key in constants.fbUserHash) {
+                    this.mapProperty(constants.fbUserHash[key], info[key]);
                 }
             }
-        }
+        };
     }
 });
